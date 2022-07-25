@@ -13,6 +13,18 @@
     border-left: 1px solid gray;
 }
 
+.missCell {
+    background-color: gray;
+}
+
+.shipCell {
+    background-color: deepskyblue;
+}
+
+.killCell {
+    background-color: red;
+}
+
 .headerCell {
     display: flex;
     height: 30px;
