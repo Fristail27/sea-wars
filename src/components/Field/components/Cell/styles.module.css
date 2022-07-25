@@ -6,11 +6,21 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    border-left: none;
+    /*border-left: none;*/
+    z-index: 1;
 }
 
-.cell:first-child {
-    border-left: 1px solid gray;
+/*.cell:first-child {*/
+/*    border-left: 1px solid gray;*/
+/*}*/
+
+.emptyCell {}
+
+.emptyCell:hover {
+    cursor: pointer;
+    border: 1px solid blue;
+    box-shadow: 0px 0px 3px 3px blue;
+    z-index: 2;
 }
 
 .missCell {
