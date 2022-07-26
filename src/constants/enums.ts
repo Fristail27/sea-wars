@@ -4,3 +4,9 @@ export enum CellValueEnum {
     ship = 2,
     kill = 3
 }
+
+
+export enum FieldTypesEnum {
+    self = 'self',
+    enemy = 'enemy'
+}

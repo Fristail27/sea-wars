@@ -1,16 +1,25 @@
 import React from "react";
-import {Cell} from "../Cell";
-import {CellValueEnum} from "../../../../constants/enums";
+import {EnemyCell, SelfCell} from "../Cell";
+import {CellValueEnum, FieldTypesEnum} from "../../../../constants/enums";
 import styles from './styles.module.css'
 
 type FieldRowTypes = {
     row: Array<CellValueEnum>,
     rowIndex: number,
     setField: React.Dispatch<React.SetStateAction<(0 | 1 | 2 | 3)[][]>>
+    fieldType: FieldTypesEnum
 }
 
-export const FieldRow: React.FC<FieldRowTypes> = ({row, rowIndex, setField}) => {
+export const FieldRow: React.FC<FieldRowTypes> = ({row, rowIndex, setField, fieldType }) => {
     return <div className={styles.fieldRow}>
-        {row.map((cell, i) => <Cell setField={setField} rowIndex={rowIndex} columnIndex={i} key={i} value={cell}/>)}
+        {row.map((cell, i) => {
+            if (fieldType === FieldTypesEnum.self) {
+                return <SelfCell setField={setField} rowIndex={rowIndex} columnIndex={i} key={i}
+                             value={cell}/>
+            } else {
+                return <EnemyCell setField={setField} rowIndex={rowIndex} columnIndex={i} key={i}
+                             value={cell}/>
+            }
+        })}
     </div>
 }
