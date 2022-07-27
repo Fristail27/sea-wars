@@ -6,6 +6,6 @@ import styles from './styles.module.css'
 
 export const HeaderRow = () => {
     return <div className={styles.headerRowContainer}>
-        {TopRowValues.map(val => <HeaderCell value={val}/>)}
+        {TopRowValues.map(val => <HeaderCell key={val} value={val}/>)}
     </div>
 }

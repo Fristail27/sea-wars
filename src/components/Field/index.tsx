@@ -15,11 +15,11 @@ type FieldTypes = {
 export const Field: React.FC<FieldTypes> = ({field, setField, fieldType}) => {
     return <div className={styles.fieldContainer}>
         <div style={{marginTop: 30}}>
-            {LeftColumnValues.map(val => <HeaderCell value={val} />)}
+            {LeftColumnValues.map(val => <HeaderCell key={val} value={val} />)}
         </div>
         <div>
             <HeaderRow/>
-            {field.map((row, i) => <FieldRow fieldType={fieldType} setField={setField} key={i} rowIndex={i} row={row}/>)}
+            {field.map((row, i) => <FieldRow fieldType={fieldType} setField={setField} key={`${fieldType}-${i}`} rowIndex={i} row={row}/>)}
         </div>
     </div>
 }

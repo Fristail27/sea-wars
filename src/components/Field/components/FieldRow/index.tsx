@@ -14,10 +14,10 @@ export const FieldRow: React.FC<FieldRowTypes> = ({row, rowIndex, setField, fiel
     return <div className={styles.fieldRow}>
         {row.map((cell, i) => {
             if (fieldType === FieldTypesEnum.self) {
-                return <SelfCell setField={setField} rowIndex={rowIndex} columnIndex={i} key={i}
+                return <SelfCell setField={setField} rowIndex={rowIndex} columnIndex={i} key={`${fieldType}-${i}-${rowIndex}`}
                              value={cell}/>
             } else {
-                return <EnemyCell setField={setField} rowIndex={rowIndex} columnIndex={i} key={i}
+                return <EnemyCell setField={setField} rowIndex={rowIndex} columnIndex={i} key={`${fieldType}-${i}-${rowIndex}`}
                              value={cell}/>
             }
         })}
