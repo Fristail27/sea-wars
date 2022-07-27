@@ -10,3 +10,8 @@ export enum FieldTypesEnum {
     self = 'self',
     enemy = 'enemy'
 }
+
+export enum ShipDirectionEnum {
+    vert = 'vertical',
+    hor = 'horizontal',
+}

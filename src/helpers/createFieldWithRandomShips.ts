@@ -1,3 +1,5 @@
+import {ShipDirectionEnum} from "../constants/enums";
+
 const createEmptyField = (): Array<Array<0 | 2>> => [
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
@@ -14,15 +16,20 @@ const createEmptyField = (): Array<Array<0 | 2>> => [
 const getTwoRandomNums = ():number[] => {
     const randArrNum = Math.floor((Math.random() * 100)).toString().split('').map(num => +num)
     if (!Number.isInteger(randArrNum[1])) {
-        randArrNum[1] = Math.floor(Math.random() * 10)
+        randArrNum.unshift(0)
     }
     return randArrNum
 }
 
 const getRandomBool = ():boolean => Math.random() > 0.5
 
-const checkCanSetShip = (field: Array<Array<0|2>>, length: 1|2|3|4) => {
+const checkCanSetShip = (field: Array<Array<0|2>>, lengthShip:number, direction: ShipDirectionEnum, startPoint: number[]) => {
 
+}
+
+const addShipInField = (field: Array<Array<0|2>>, lengthShip: number, direction: ShipDirectionEnum) => {
+    const startPoints = getTwoRandomNums()
+    const isValidPosition = checkCanSetShip(field, lengthShip, direction, startPoints)
 }
 
 const set4Ship = (field: Array<Array<0|2>>) => {
