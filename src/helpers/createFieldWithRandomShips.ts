@@ -164,7 +164,7 @@ const add4CellShip = (field: Array<Array<0|2|4>>) => {
             field[row+2][col] = CellValueEnum.ship
             field[row+3][col] = CellValueEnum.ship
             setBlockedCells(field,[[row, col], [row+1, col], [row+2, col], [row+3, col]], isVertical)
-        } else if (row >= 4 && row <= 7) {
+        } else if (row >= 4 && row <= 6) {
             const isTopDirection = getRandomBool()
             if (isTopDirection) {
                 field[row][col] = CellValueEnum.ship
