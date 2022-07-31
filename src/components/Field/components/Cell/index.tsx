@@ -17,7 +17,7 @@ type CellTypes = {
     value: CellValueEnum,
     columnIndex: number,
     rowIndex: number,
-    setField: React.Dispatch<React.SetStateAction<(0 | 1 | 2 | 3)[][]>>
+    setField: React.Dispatch<React.SetStateAction<CellValueEnum[][]>>
 }
 
 type EmptyCellTypes = {
@@ -25,7 +25,7 @@ type EmptyCellTypes = {
     rowIndex: number,
     isNotClickable?: boolean,
     columnIndex: number,
-    setField:  React.Dispatch<React.SetStateAction<(0 | 1 | 2 | 3)[][]>>
+    setField:  React.Dispatch<React.SetStateAction<CellValueEnum[][]>>
 }
 
 const EmptyCell: React.FC<EmptyCellTypes> = ({rowIndex, columnIndex, setField, newValue, isNotClickable}) => {

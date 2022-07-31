@@ -7,7 +7,7 @@ import {createFieldWithRandomShips} from "../../helpers/createFieldWithRandomShi
 
 
 export const AppContainer = () => {
-    const [leftField, setLeftField] = useState(fieldConfig)
+    const [leftField, setLeftField] = useState(createFieldWithRandomShips())
     const [rightField, setRightField] = useState(fieldConfig2)
     createFieldWithRandomShips()
     return <div className={styles.appContainer}>

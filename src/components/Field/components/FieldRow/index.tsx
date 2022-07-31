@@ -6,7 +6,7 @@ import styles from './styles.module.css'
 type FieldRowTypes = {
     row: Array<CellValueEnum>,
     rowIndex: number,
-    setField: React.Dispatch<React.SetStateAction<(0 | 1 | 2 | 3)[][]>>
+    setField: React.Dispatch<React.SetStateAction<CellValueEnum[][]>>
     fieldType: FieldTypesEnum
 }
 
