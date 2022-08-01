@@ -7,9 +7,8 @@ import {createFieldWithRandomShips} from "../../helpers/createFieldWithRandomShi
 
 
 export const AppContainer = () => {
-    const [leftField, setLeftField] = useState(createFieldWithRandomShips())
+    const [leftField, setLeftField] = useState(fieldConfig)
     const [rightField, setRightField] = useState(fieldConfig2)
-    createFieldWithRandomShips()
     return <div className={styles.appContainer}>
         <Field fieldType={FieldTypesEnum.self} setField={setLeftField} field={leftField}/>
         <Field fieldType={FieldTypesEnum.enemy} setField={setRightField} field={rightField}/>
