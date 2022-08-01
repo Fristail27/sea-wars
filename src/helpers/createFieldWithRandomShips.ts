@@ -82,260 +82,162 @@ const setBlockedCells = (field: CellValueEnum[][], line: number[][], isVertical:
     }
 }
 
-const checkCanSetShip = (field: Array<Array<CellValueEnum>>, lengthShip:number, direction: ShipDirectionEnum, isPlusDirection: boolean, startPoint: number[]) => {
-    const [row, col] = startPoint;
-
-    let result = true
-
-    if (ShipDirectionEnum.vert) {
-        if (row < lengthShip - 1) {
-            for (let i = 0; i< lengthShip; i++) {
-                if (field[row + i][col] === CellValueEnum.ship || field[row + i][col] === CellValueEnum.support) {
-                    return false
-                }
-            }
-        } else if (row >= lengthShip - 1 && row <= (9 - lengthShip + 1)) {
-            if (isPlusDirection) {
-                for (let i = 0; i< lengthShip; i++) {
-                    if (field[row + i][col] === CellValueEnum.ship || field[row + i][col] === CellValueEnum.support) {
-                        return false
-                    }
-                }
-            } else {
-                for (let i = 0; i< lengthShip; i++) {
-                    if (field[row - i][col] === CellValueEnum.ship || field[row - i][col] === CellValueEnum.support) {
-                        return false
-                    }
-                }
-            }
-        } else {
-            for (let i = 0; i< lengthShip; i++) {
-                if (field[row - i][col] === CellValueEnum.ship || field[row - i][col] === CellValueEnum.support) {
-                    return false
-                }
-            }
-        }
-    } else {
-        if (col < lengthShip - 1) {
-            for (let i = 0; i< lengthShip; i++) {
-                if (field[row][col+i] === CellValueEnum.ship || field[row][col+i] === CellValueEnum.support) {
-                    return false
-                }
-            }
-        } else if (col >= lengthShip - 1 && col <= (9 - lengthShip + 1)) {
-            if (isPlusDirection) {
-                for (let i = 0; i< lengthShip; i++) {
-                    if (field[row][col + i] === CellValueEnum.ship || field[row][col + i] === CellValueEnum.support) {
-                        return false
-                    }
-                }
-            } else {
-                for (let i = 0; i< lengthShip; i++) {
-                    if (field[row][col - i] === CellValueEnum.ship || field[row][col - i] === CellValueEnum.support) {
-                        return false
-                    }
-                }
-            }
-        } else {
-            for (let i = 0; i< lengthShip; i++) {
-                if (field[row][col - i] === CellValueEnum.ship || field[row][col - i] === CellValueEnum.support) {
-                    return false
-                }
-            }
-        }
+const validateCell = (field: CellValueEnum[][], row: number, col: number) => {
+    if (field[row][col] === CellValueEnum.ship) {
+        return false
     }
+    if (field[row][col+1] === CellValueEnum.ship) {
+        return false
+    }
+    if (field[row][col-1] === CellValueEnum.ship) {
+        return false
+    }
+    if (field[row+1] && (field[row+1][col] === CellValueEnum.ship)) {
+        return false
+    }
+    if (field[row+1] && (field[row+1][col+1] === CellValueEnum.ship)) {
+        return false
+    }
+    if (field[row+1] && (field[row+1][col-1] === CellValueEnum.ship)) {
+        return false
+    }
+    if (field[row-1] && (field[row-1][col] === CellValueEnum.ship)) {
+        return false
+    }
+    if (field[row-1] && (field[row-1][col - 1] === CellValueEnum.ship)) {
+        return false
+    }
+    if (field[row-1] && (field[row-1][col + 1] === CellValueEnum.ship)) {
+        return false
+    }
+
     return true
 }
 
-const addShipInField = (field: Array<Array<0|2>>, lengthShip: number, direction: ShipDirectionEnum) => {
+const validateShip = (field: CellValueEnum[][], coordinates: number[][]) => {
+    let result = true
+    for (let i = 0; i < coordinates.length; i++) {
+        const isValidCell = validateCell(field, coordinates[i][0], coordinates[i][1])
+        if (!isValidCell) {
+            result = false
+            break
+        }
+    }
+    return result
+}
+
+
+
+const createCoordinate = (startPoint: number[], lengthShip:number, isVertical:boolean, isPlusCoordinate: boolean ) => {
+    const [row, col] = startPoint;
+
+    if (isVertical) {
+        if (row < lengthShip - 1) {
+            let res = []
+            for (let i = 0; i< lengthShip; i++) {
+                res.push([row+i, col])
+            }
+            return res
+        } else if (row >= lengthShip - 1 && row <= (9 - lengthShip + 1)) {
+            if (isPlusCoordinate) {
+                let res = []
+                for (let i = 0; i< lengthShip; i++) {
+                    res.push([row+i, col])
+                }
+                return res
+            } else {
+                let res = []
+                for (let i = 0; i< lengthShip; i++) {
+                    res.push([row-i, col])
+                }
+                return res
+            }
+        } else {
+            let res = []
+            for (let i = 0; i< lengthShip; i++) {
+                res.push([row-i, col])
+            }
+            return res
+        }
+    } else {
+        if (col < lengthShip - 1) {
+            let res = []
+            for (let i = 0; i< lengthShip; i++) {
+                res.push([row, col+i])
+            }
+            return res
+        } else if (col >= lengthShip - 1 && col <= (9 - lengthShip + 1)) {
+            if (isPlusCoordinate) {
+                let res = []
+                for (let i = 0; i< lengthShip; i++) {
+                    res.push([row, col+i])
+                }
+                return res
+            } else {
+                let res = []
+                for (let i = 0; i< lengthShip; i++) {
+                    res.push([row, col-i])
+                }
+                return res
+            }
+        } else {
+            let res = []
+            for (let i = 0; i< lengthShip; i++) {
+                res.push([row, col-i])
+            }
+            return res
+        }
+    }
+}
+
+const createAndCheckShip = (
+    field: Array<Array<CellValueEnum>>,
+    startPoints: number[],
+    lengthShip:number,
+    isVertical:boolean,
+    isPlusCoordinate: boolean
+): number[][] | false => {
+    const coordinate = createCoordinate(startPoints, lengthShip, isVertical, isPlusCoordinate)
+    const isValid = validateShip(field, coordinate)
+    return isValid ? coordinate : false
+}
+
+const setShip = (field: CellValueEnum[][], coordinates: number[][]) => {
+    for (let i = 0; i < coordinates.length; i++) {
+        field[coordinates[i][0]][coordinates[i][1]] = CellValueEnum.ship
+    }
+}
+
+const addRandomShipInField = (field: Array<Array<CellValueEnum>>, lengthShip: number, counter: {counter: number}) => {
+    counter.counter += 1
     const startPoints = getTwoRandomNums()
-    // const isValidPosition = checkCanSetShip(field, lengthShip, direction, startPoints)
-}
-
-const add4CellShip = (field: Array<Array<0|2|4>>) => {
-    const [row, col] = getTwoRandomNums()
-
     const isVertical = getRandomBool()
-
-    if (isVertical) {
-        if (row < 3) {
-            field[row][col] = CellValueEnum.ship
-            field[row+1][col] = CellValueEnum.ship
-            field[row+2][col] = CellValueEnum.ship
-            field[row+3][col] = CellValueEnum.ship
-            setBlockedCells(field,[[row, col], [row+1, col], [row+2, col], [row+3, col]], isVertical)
-        } else if (row >= 4 && row <= 6) {
-            const isTopDirection = getRandomBool()
-            if (isTopDirection) {
-                field[row][col] = CellValueEnum.ship
-                field[row-1][col] = CellValueEnum.ship
-                field[row-2][col] = CellValueEnum.ship
-                field[row-3][col] = CellValueEnum.ship
-                setBlockedCells(field,[[row, col], [row-1, col], [row-2, col], [row-3, col]], isVertical)
-            } else {
-                field[row][col] = CellValueEnum.ship
-                field[row+1][col] = CellValueEnum.ship
-                field[row+2][col] = CellValueEnum.ship
-                field[row+3][col] = CellValueEnum.ship
-                setBlockedCells(field,[[row, col], [row+1, col], [row+2, col], [row+3, col]], isVertical)
-            }
-        } else {
-            field[row][col] = CellValueEnum.ship
-            field[row-1][col] = CellValueEnum.ship
-            field[row-2][col] = CellValueEnum.ship
-            field[row-3][col] = CellValueEnum.ship
-            setBlockedCells(field,[[row, col], [row-1, col], [row-2, col], [row-3, col]], isVertical)
-        }
+    const isPlusCoordinate = getRandomBool()
+    const coordinates = createAndCheckShip(field, startPoints, lengthShip, isVertical, isPlusCoordinate)
+    if (coordinates) {
+        setShip(field, coordinates)
+        setBlockedCells(field, coordinates, isVertical)
     } else {
-        if (col < 3) {
-            field[row][col] = CellValueEnum.ship
-            field[row][col+1] = CellValueEnum.ship
-            field[row][col+2] = CellValueEnum.ship
-            field[row][col+3] = CellValueEnum.ship
-            setBlockedCells(field,[[row, col], [row, col+1], [row, col+2], [row, col+3]], isVertical)
-        } else if (col > 3 && col < 7) {
-            const isRightDirection = getRandomBool()
-            if (isRightDirection) {
-                field[row][col] = CellValueEnum.ship
-                field[row][col+1] = CellValueEnum.ship
-                field[row][col+2] = CellValueEnum.ship
-                field[row][col+3] = CellValueEnum.ship
-                setBlockedCells(field,[[row, col], [row, col+1], [row, col+2], [row, col+3]], isVertical)
-            } else {
-                field[row][col] = CellValueEnum.ship
-                field[row][col-1] = CellValueEnum.ship
-                field[row][col-2] = CellValueEnum.ship
-                field[row][col-3] = CellValueEnum.ship
-                setBlockedCells(field,[[row, col], [row, col-1], [row, col-2], [row, col-3]], isVertical)
-            }
-        } else {
-            field[row][col] = CellValueEnum.ship
-            field[row][col-1] = CellValueEnum.ship
-            field[row][col-2] = CellValueEnum.ship
-            field[row][col-3] = CellValueEnum.ship
-            setBlockedCells(field,[[row, col], [row, col-1], [row, col-2], [row, col-3]], isVertical)
-        }
+        addRandomShipInField(field, lengthShip, counter)
     }
 }
-
-const add3CellShip = (field: Array<Array<0|2|4>>) => {
-    const [row, col] = getTwoRandomNums()
-
-    const isVertical = getRandomBool()
-
-    if (isVertical) {
-        if (row < 3) {
-            if (checkCanSetShip(
-                field,
-                3,
-                ShipDirectionEnum.vert,
-                true,
-                [row, col]
-            )) {
-                field[row][col] = CellValueEnum.ship
-                field[row+1][col] = CellValueEnum.ship
-                field[row+2][col] = CellValueEnum.ship
-                setBlockedCells(field,[[row, col], [row+1, col], [row+2, col]], isVertical)
-            } else {
-                add3CellShip(field)
-            }
-
-        } else if (row >= 3 && row <= 7) {
-            const isTopDirection = getRandomBool()
-            if (isTopDirection) {
-                if (checkCanSetShip(field, 3, ShipDirectionEnum.vert, true, [row, col])) {
-                    field[row][col] = CellValueEnum.ship
-                    field[row - 1][col] = CellValueEnum.ship
-                    field[row - 2][col] = CellValueEnum.ship
-                    setBlockedCells(field, [[row, col], [row - 1, col], [row - 2, col]], isVertical)
-                } else {
-                    add3CellShip(field)
-                }
-            } else {
-                if (checkCanSetShip(field, 3, ShipDirectionEnum.vert, false, [row, col])) {
-                    field[row][col] = CellValueEnum.ship
-                    field[row + 1][col] = CellValueEnum.ship
-                    field[row + 2][col] = CellValueEnum.ship
-                    setBlockedCells(field, [[row, col], [row + 1, col], [row + 2, col]], isVertical)
-                } else {
-                    add3CellShip(field)
-                }
-            }
-        } else {
-            if (checkCanSetShip(field, 3, ShipDirectionEnum.vert, false, [row, col])) {
-                field[row][col] = CellValueEnum.ship
-                field[row - 1][col] = CellValueEnum.ship
-                field[row - 2][col] = CellValueEnum.ship
-                setBlockedCells(field, [[row, col], [row - 1, col], [row - 2, col]], isVertical)
-            } else {
-                add3CellShip(field)
-            }
-        }
-    } else {
-        if (col < 3) {
-            if (checkCanSetShip(field, 3, ShipDirectionEnum.hor, true, [row, col])) {
-                field[row][col] = CellValueEnum.ship
-                field[row][col + 1] = CellValueEnum.ship
-                field[row][col + 2] = CellValueEnum.ship
-                setBlockedCells(field, [[row, col], [row, col + 1], [row, col + 2]], isVertical)
-            } else {
-                add3CellShip(field)
-            }
-        } else if (col >= 3 && col <= 7) {
-            const isTopDirection = getRandomBool()
-            if (isTopDirection) {
-                if (checkCanSetShip(field, 3, ShipDirectionEnum.hor, true, [row, col])) {
-                    field[row][col] = CellValueEnum.ship
-                    field[row][col + 1] = CellValueEnum.ship
-                    field[row][col + 2] = CellValueEnum.ship
-                    setBlockedCells(field, [[row, col], [row, col + 1], [row, col + 2]], isVertical)
-                } else {
-                    add3CellShip(field)
-                }
-            } else {
-                if (checkCanSetShip(field, 3, ShipDirectionEnum.hor, false, [row, col])) {
-                    field[row][col] = CellValueEnum.ship
-                    field[row][col - 1] = CellValueEnum.ship
-                    field[row][col - 2] = CellValueEnum.ship
-                    setBlockedCells(field, [[row, col], [row, col - 1], [row, col - 2]], isVertical)
-                } else {
-                    add3CellShip(field)
-                }
-            }
-        } else {
-            if (checkCanSetShip(field, 3, ShipDirectionEnum.hor, false, [row, col])) {
-                field[row][col] = CellValueEnum.ship
-                field[row][col - 1] = CellValueEnum.ship
-                field[row][col - 2] = CellValueEnum.ship
-                setBlockedCells(field, [[row, col], [row, col - 1], [row, col - 2]], isVertical)
-            } else {
-                add3CellShip(field)
-            }
-        }
-    }
-}
-
-
 
 export const createFieldWithRandomShips = (): Array<Array<CellValueEnum>> => {
     const emptyField = createEmptyField()
 
-    add4CellShip(emptyField)
+    let counter = {counter: 0}
 
-    add3CellShip(emptyField)
-    add3CellShip(emptyField)
+    addRandomShipInField(emptyField, 4, counter)
+    addRandomShipInField(emptyField, 3, counter)
+    addRandomShipInField(emptyField, 3, counter)
+    addRandomShipInField(emptyField, 2, counter)
+    addRandomShipInField(emptyField, 2, counter)
+    addRandomShipInField(emptyField, 2, counter)
+    addRandomShipInField(emptyField, 1, counter)
+    addRandomShipInField(emptyField, 1, counter)
+    addRandomShipInField(emptyField, 1, counter)
+    addRandomShipInField(emptyField, 1, counter)
 
-    //
-    // const randomStart = getTwoRandomNums()
-    // emptyField[randomStart[0]][randomStart[1]] = 2
-    //
-    // const isVertical = getRandomBool()
-    //
-    // if (isVertical) {
-    //
-    // }
-
-    // console.log(randomStart)
-    console.log(emptyField)
+    console.log(counter)
     return emptyField
 }
