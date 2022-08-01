@@ -1,4 +1,4 @@
-import {CellValueEnum, ShipDirectionEnum} from "../constants/enums";
+import {CellValueEnum} from "../constants/enums";
 
 const createEmptyField = (): Array<Array<0 | 2>> => [
     [0,0,0,0,0,0,0,0,0,0],
