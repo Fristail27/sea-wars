@@ -21,7 +21,7 @@ const checkCellNeibValues = (field: CellValueEnum[][], row: number, col: number,
 
     if (result.length > 0) return result
 
-    return true
+    return false
 }
 
 const checkCellNeibisNotValues = (field: CellValueEnum[][], row: number, col: number, value:CellValueEnum ) => {
@@ -70,13 +70,14 @@ const checkCell = (field: CellValueEnum[][], row: number, col: number) => {
     if (isNeibShipped) return false
 
     const isNeibKilled = checkCellNeibValues(field, row, col, CellValueEnum.kill)
+    console.log(isNeibKilled)
+    if (isNeibKilled && isNeibKilled.length === 1) {
 
+    }
     const isNeibNotShip = checkCellNeibisNotValues(field, row, col, CellValueEnum.ship)
 
     const isNeibNotKill = checkCellNeibisNotValues(field, row, col, CellValueEnum.kill)
 
-    console.log(isNeibNotShip)
-    console.log(isNeibNotKill)
     if (isNeibNotShip && isNeibNotKill) {
         coordinates.push([row, col])
         return coordinates
@@ -90,11 +91,10 @@ const checkCell = (field: CellValueEnum[][], row: number, col: number) => {
 export const getUpdateField = (field: CellValueEnum[][], columnIndex: number, rowIndex: number, newValue: CellValueEnum) => {
     const copyField = field.map(row => row.map(cell => cell))
     const coords = checkCell(copyField, rowIndex, columnIndex)
+    copyField[rowIndex][columnIndex] = newValue
     if (coords && newValue === CellValueEnum.kill) {
-        console.log(coords)
         setMissValues(copyField, coords)
     }
-    console.log(copyField)
-    copyField[rowIndex][columnIndex] = newValue
+
     return copyField
 }
