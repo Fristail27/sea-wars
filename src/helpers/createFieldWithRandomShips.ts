@@ -23,65 +23,6 @@ const getTwoRandomNums = ():number[] => {
 
 const getRandomBool = ():boolean => Math.random() > 0.5
 
-const setBlockedCells = (field: CellValueEnum[][], line: number[][], isVertical: boolean) => {
-    if (isVertical) {
-        line.forEach(([row, col]) => {
-            if (row - 1 >= 0 && field[row - 1][col] === CellValueEnum.empty) {
-                field[row - 1][col] = CellValueEnum.support
-                if (col-1 > 0) {
-                    field[row - 1][col - 1] = CellValueEnum.support
-                }
-                if (col+1 <= 9) {
-                    field[row - 1][col + 1] = CellValueEnum.support
-                }
-            }
-            if (col+1 <= 9) {
-                field[row][col + 1] = CellValueEnum.support
-
-            }
-            if (col-1 >= 0) {
-                field[row][col - 1] = CellValueEnum.support
-            }
-            if (row + 1 <=9 && field[row +1][col] === CellValueEnum.empty) {
-                field[row + 1][col] = CellValueEnum.support
-                if (col-1 > 0) {
-                    field[row + 1][col - 1] = CellValueEnum.support
-                }
-                if (col+1 <= 9) {
-                    field[row + 1][col + 1] = CellValueEnum.support
-                }
-            }
-        })
-    } else {
-        line.forEach(([row, col]) => {
-            if (col - 1 >= 0 && field[row][col-1] === CellValueEnum.empty) {
-                field[row][col-1] = CellValueEnum.support
-                if (row-1 > 0) {
-                    field[row - 1][col - 1] = CellValueEnum.support
-                }
-                if (row+1 <= 9) {
-                    field[row + 1][col - 1] = CellValueEnum.support
-                }
-            }
-            if (row+1 <= 9) {
-                field[row+1][col] = CellValueEnum.support
-            }
-            if (row-1 >= 0) {
-                field[row-1][col] = CellValueEnum.support
-            }
-            if (col + 1 <=9 && field[row][col+1] === CellValueEnum.empty) {
-                field[row][col + 1] = CellValueEnum.support
-                if (row-1 > 0) {
-                    field[row - 1][col + 1] = CellValueEnum.support
-                }
-                if (row+1 <= 9) {
-                    field[row + 1][col + 1] = CellValueEnum.support
-                }
-            }
-        })
-    }
-}
-
 const validateCell = (field: CellValueEnum[][], row: number, col: number) => {
     if (field[row][col] === CellValueEnum.ship) {
         return false
@@ -216,7 +157,6 @@ const addRandomShipInField = (field: Array<Array<CellValueEnum>>, lengthShip: nu
     const coordinates = createAndCheckShip(field, startPoints, lengthShip, isVertical, isPlusCoordinate)
     if (coordinates) {
         setShip(field, coordinates)
-        setBlockedCells(field, coordinates, isVertical)
     } else {
         addRandomShipInField(field, lengthShip, counter)
     }
