@@ -64,15 +64,26 @@ const setMissValues = (field: CellValueEnum[][], line: number[][]) => {
     })
 }
 
-const checkCell = (field: CellValueEnum[][], row: number, col: number) => {
-    const coordinates = []
+const checkCell = (field: CellValueEnum[][], row: number, col: number, coordinates: number[][] = []) => {
     const isNeibShipped = checkCellNeibValues(field, row, col, CellValueEnum.ship)
-    if (isNeibShipped) return false
+    if (isNeibShipped) {
+        return false
+    }
 
-    const isNeibKilled = checkCellNeibValues(field, row, col, CellValueEnum.kill)
-    console.log(isNeibKilled)
-    if (isNeibKilled && isNeibKilled.length === 1) {
-
+    const neibKilled = checkCellNeibValues(field, row, col, CellValueEnum.kill)
+    if (neibKilled) {
+        if (coordinates.some(cor => JSON.stringify(cor) === JSON.stringify([row, col]))) {
+            coordinates.push([row, col])
+        }
+        neibKilled.forEach(el => {
+            if (!coordinates.some(cor => JSON.stringify(cor) === JSON.stringify(el))) {
+                coordinates.push(el)
+                const res = checkCell(field, el[0], el[1], coordinates)
+            }
+        })
+        if (coordinates) {
+            return coordinates
+        }
     }
     const isNeibNotShip = checkCellNeibisNotValues(field, row, col, CellValueEnum.ship)
 
@@ -82,19 +93,18 @@ const checkCell = (field: CellValueEnum[][], row: number, col: number) => {
         coordinates.push([row, col])
         return coordinates
     }
-
-    // if (isNeibNotKill && isNeibNotShip) return false
-
 }
 
 
 export const getUpdateField = (field: CellValueEnum[][], columnIndex: number, rowIndex: number, newValue: CellValueEnum) => {
     const copyField = field.map(row => row.map(cell => cell))
-    const coords = checkCell(copyField, rowIndex, columnIndex)
     copyField[rowIndex][columnIndex] = newValue
+    const coords = checkCell(copyField, rowIndex, columnIndex)
+
     if (coords && newValue === CellValueEnum.kill) {
+        console.log(111)
         setMissValues(copyField, coords)
     }
-
+    console.log(copyField)
     return copyField
 }
