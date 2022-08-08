@@ -11,9 +11,10 @@ type FieldTypes = {
     field: Array<Array<CellValueEnum>>,
     setField: React.Dispatch<React.SetStateAction<CellValueEnum[][]>>
     fieldType: FieldTypesEnum
+    isStarted?: boolean
 }
 
-export const Field: React.FC<FieldTypes> = ({field, setField, fieldType}) => {
+export const Field: React.FC<FieldTypes> = ({field, setField, fieldType, isStarted}) => {
     return <div className={styles.fieldContainer}>
         <div style={{marginTop: 30}}>
             {LeftColumnValues.map(val => <HeaderCell key={val} value={val} />)}
@@ -22,6 +23,9 @@ export const Field: React.FC<FieldTypes> = ({field, setField, fieldType}) => {
             <HeaderRow/>
             {field.map((row, i) => <FieldRow fieldType={fieldType} setField={setField} key={`${fieldType}-${i}`} rowIndex={i} row={row}/>)}
         </div>
-        <button onClick={() => setField(createFieldWithRandomShips())}>gen</button>
+        {fieldType === FieldTypesEnum.self && !isStarted && <button
+            className={styles.createFieldBtn}
+            onClick={() => setField(createFieldWithRandomShips())}
+        >Случайно расположить корабли</button>}
     </div>
 }
